@@ -49,10 +49,10 @@ pipeline {
             GIT_USER_NAME = "priyabuss2004"
         }
         steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+             git branch: 'main', credentialsId: 'github', url: 'https://github.com/priyabuss2004/java-web-app-deployment.git'
+              withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
-                   git branch: 'main', url: 'https://github.com/priyabuss2004/java-web-app-deployment.git'  
-                   git config user.email "priyabuss2004@gmail.com"
+                  git config user.email "priyabuss2004@gmail.com"
                     git config user.name "priyanka"
                     ls -ltr
                     BUILD_NUMBER=${BUILD_NUMBER}
