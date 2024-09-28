@@ -41,6 +41,27 @@ pipeline {
         }
       }
     }
-    
+
+
+     stage('Update Deployment File') {
+        environment {
+            GIT_REPO_NAME = "java-web-app-deployment"
+            GIT_USER_NAME = "priyabuss2004"
+        }
+        steps {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "priyabuss2004@gmail.com"
+                    git config user.name "priyanka"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-web-app-deployment/deployment.yml
+                    git add java-web-app-deployment/deployment.yml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+            }
+        }
+    }
+
    }
 }
